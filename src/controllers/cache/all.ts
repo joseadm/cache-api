@@ -1,10 +1,11 @@
 import { RequestHandler } from 'express';
 import Cache from '../../models/Cache';
+import requestMiddleware from '../../middleware/request-middleware';
 
 const all: RequestHandler = async (req, res) => {
   const caches = await Cache.find();
-  //let result = caches.map(cache => {key: cache.key});
-  res.send({ caches });
+  let keys = caches.map(cache => cache.key);
+  res.send({ keys });
 };
 
-export default all;
+export default requestMiddleware(all);

@@ -12,6 +12,8 @@ const router = Router();
 // Book routes
 router.post('/cache/add', CacheController.add);
 router.get('/cache/all', CacheController.all);
+router.get('/cache/get/:cacheKey', CacheController.get);
+router.delete('/cache/delete/:cacheKey', CacheController.remove);
 
 // Dev routes
 if (process.env.NODE_ENV === 'development') {

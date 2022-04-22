@@ -1,6 +1,7 @@
 import { Request, RequestHandler } from 'express';
 import Joi from 'joi';
 import Cache from '../../models/Cache';
+import requestMiddleware from '../../middleware/request-middleware';
 
 export const addBookSchema = Joi.object().keys({
   key: Joi.string().required(),
@@ -24,4 +25,4 @@ const add: RequestHandler = async (req: Request<{}, {}, AddReqBody>, res) => {
   });
 };
 
-export default add;
+export default requestMiddleware(add, { validation: { body: addBookSchema } });
