@@ -20,7 +20,7 @@ $ docker-compose up -d
 ```
 #### 3. Ouside dependencies
 
-MongoDB database setup with port in 27017 is necessary, can just run docker
+MongoDB database setup with port in 27017 named mongo-db is necessary, can just run docker
 ```
 $ docker-compose up -d
 ```
