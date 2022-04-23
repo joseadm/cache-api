@@ -1,0 +1,187 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "API Service",
+      "version": "1.0.0",
+      "description": "API Service endpoints"
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "tags": [
+      {
+        "name": "cache",
+        "description": "Caches APIs"
+      }
+    ],
+    "paths": {
+      "/cache/add": {
+        "post": {
+          "tags": ["cache"],
+          "summary": "Add a cache to the database",
+          "operationId": "cache-add",
+          "requestBody": {
+            "description": "New user signing up",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftcacheSchema"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Cache was added",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/cacheSchema"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BadRequestSchema"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ServerErrorSchema"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/cache/keys": {
+        "get": {
+          "tags": ["cache"],
+          "summary": "Get all caches in database",
+          "operationId": "cache-get-all",
+          "responses": {
+            "200": {
+              "description": "Search results",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "caches": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/cacheSchema"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ServerErrorSchema"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "BadRequestSchema": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "description": "Error message",
+              "example": "PATH: [key] ;; MESSAGE: \"key\" is required"
+            }
+          },
+          "required": ["error"]
+        },
+        "ServerErrorSchema": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "description": "Error message",
+              "example": "Internal server error"
+            }
+          },
+          "required": ["error"]
+        },
+        "NotFoundErrorSchema": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "description": "Error message",
+              "example": "Item not found"
+            }
+          },
+          "required": ["error"]
+        },
+        "DraftcacheSchema": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "key of the cache",
+              "example": "123y"
+            },
+            "value": {
+              "type": "string",
+              "description": "value of the cache",
+              "example": "test"
+            }
+          },
+          "required": ["name", "value"]
+        },
+        "cacheSchema": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/DraftcacheSchema"
+            }
+          ],
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "MongoDB id of the document",
+              "example": "5d7224d3b40b1a1a046697dd"
+            },
+            "createdAt": {
+              "type": "number",
+              "description": "Created at timestamp in miliseconds",
+              "example": 1616158942428
+            },
+            "updatedAt": {
+              "type": "number",
+              "description": "Updated at timestamp in miliseconds",
+              "example": 1616158942428
+            }
+          },
+          "required": ["_id", "createdAt", "updatedAt"]
+        }
+      }
+    }
+  }
+  

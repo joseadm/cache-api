@@ -1,14 +1,16 @@
 import add from './add';
-import all from './all';
+import keys from './keys';
 import get from './get';
 import set from './set';
+import update from './update';
 import remove from './remove';
 import removeAll from './removeAll';
 
 export {
   add,
-  all,
+  keys,
   get,
+  update,
   set,
   remove,
   removeAll,

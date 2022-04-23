@@ -4,9 +4,9 @@
   "description": "REST API that exposes methods to interact with a cache",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && node dist/server.js",
-    "eslint": "eslint server.ts",
-    "ts-node-server": "ts-node server.ts",
+    "start": "tsc && node dist/src/server.js",
+    "eslint": "eslint src/server.ts",
+    "ts-node-server": "ts-node src/server.ts",
     "build": "tsc",
     "test": "jest",
     "fix-lint": "./node_modules/eslint/bin/eslint.js  src --ext .ts --fix"

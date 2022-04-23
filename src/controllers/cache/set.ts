@@ -1,17 +1,18 @@
 import { Request, RequestHandler } from 'express';
 import requestMiddleware from '../../middleware/request-middleware';
 import Cache from '../../models/Cache';
+import generateRandomString from "../../helper/generate-random-string";
 
-const get: RequestHandler = async (req: Request, res) => {
-  const { cacheKey } = req.params;
-  console.log(`Cache to get: ${cacheKey}`);
+const set: RequestHandler = async (req: Request, res) => {
+  const { key } = req.params;
+  console.log(`Cache to get: ${key}`);
 
-  const cache = await Cache.findOne({key: cacheKey});
+  const cache = await Cache.findOne({key});
   if (!cache) {
     // Cache is not found create one
     console.log("Cache miss");
-    let randomString = (Math.random() + 1).toString(36).substring(7)
-    const cache = new Cache({ cacheKey, randomString});
+    const randomString = generateRandomString();
+    const cache = new Cache({ key, value: randomString});
     await cache.save();
 
     return res.status(200).send({
@@ -25,4 +26,4 @@ const get: RequestHandler = async (req: Request, res) => {
   });
 };
 
-export default requestMiddleware(get);
+export default requestMiddleware(set);
