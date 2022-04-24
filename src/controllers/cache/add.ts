@@ -16,20 +16,20 @@ interface AddReqBody {
 const add: RequestHandler = async (req: Request<{}, {}, AddReqBody>, res) => {
   const { key, value } = req.body;
 
-  let count = await Cache.count({});
+   let count = await Cache.count({});
 
-  // If the maximum amount of cached items is reached, 
-  // some old entry needs to be overwritten
-  // take the created date to remove oldest
+  // // If the maximum amount of cached items is reached, 
+  // // some old entry needs to be overwritten
+  // // take the created date to remove oldest
 
-  if(count.toString() === process.env.ENTRIES_LIMIT) {
-    await Cache.findOne().sort({created_at: -1}).deleteOne();
+  if(count && count.toString() === process.env.ENTRIES_LIMIT) {
+     await Cache.findOne().sort({created_at: -1}).deleteOne();
   } 
 
   const cache = new Cache({ key, value });
   await cache.save();
 
-  res.send({
+  res.status(200).send({
     message: 'Saved',
     book: cache.toJSON()
   });
