@@ -1,102 +1,195 @@
 {
-    "openapi": "3.0.1",
-    "info": {
-      "title": "API Service",
-      "version": "1.0.0",
-      "description": "API Service endpoints"
-    },
-    "servers": [
-      {
-        "url": "/"
-      }
-    ],
-    "tags": [
-      {
-        "name": "cache",
-        "description": "Caches APIs"
-      }
-    ],
-    "paths": {
-      "/cache/add": {
-        "post": {
-          "tags": ["cache"],
-          "summary": "Add a cache to the database",
-          "operationId": "cache-add",
-          "requestBody": {
-            "description": "New user signing up",
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API Service",
+    "version": "1.0.0",
+    "description": "API Service endpoints"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "cache",
+      "description": "Caches APIs"
+    }
+  ],
+  "paths": {
+    "/cache/set/{key}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
             "required": true,
+            "description": "key of cache to retrieve"
+          }
+        ],
+        "tags": ["cache"],
+        "summary": "Set cache to the database",
+        "operationId": "cache-set",
+        "responses": {
+          "200": {
+            "description": "Cache was added",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DraftcacheSchema"
+                  "$ref": "#/components/schemas/CacheSchema"
                 }
               }
             }
           },
-          "responses": {
-            "200": {
-              "description": "Cache was added",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/cacheSchema"
-                  }
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestSchema"
                 }
               }
-            },
-            "400": {
-              "description": "Bad request",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/BadRequestSchema"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "Internal Server Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ServerErrorSchema"
-                  }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorSchema"
                 }
               }
             }
           }
         }
-      },
-      "/cache/keys": {
-        "get": {
-          "tags": ["cache"],
-          "summary": "Get all caches in database",
-          "operationId": "cache-get-all",
-          "responses": {
-            "200": {
-              "description": "Search results",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "caches": {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/components/schemas/cacheSchema"
-                        }
+      }
+    },
+    "/cache/add": {
+      "post": {
+        "tags": ["cache"],
+        "summary": "Add a cache to the database",
+        "operationId": "cache-add",
+        "requestBody": {
+          "description": "New user signing up",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftcacheSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cache was added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CacheSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cache/{key}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of book to retrieve"
+          }
+        ],
+        "tags": ["cache"],
+        "summary": "Retrieve a cache by key",
+        "operationId": "cache-get",
+        "responses": {
+          "200": {
+            "description": "Cache details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "book": {
+                      "$ref": "#/components/schemas/CacheSchema"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cache not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cache/keys": {
+      "get": {
+        "tags": ["cache"],
+        "summary": "Get all caches in database",
+        "operationId": "cache-get-all",
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "caches": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CacheSchema"
                       }
                     }
                   }
                 }
               }
-            },
-            "500": {
-              "description": "Internal Server Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ServerErrorSchema"
-                  }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorSchema"
                 }
               }
             }
@@ -104,84 +197,106 @@
         }
       }
     },
-    "components": {
-      "schemas": {
-        "BadRequestSchema": {
-          "type": "object",
-          "properties": {
-            "error": {
-              "type": "string",
-              "description": "Error message",
-              "example": "PATH: [key] ;; MESSAGE: \"key\" is required"
-            }
+    "/cache/deleteAll": {
+      "delete": {
+        "tags": ["cache"],
+        "summary": "Remove all caches",
+        "operationId": "cache-remove",
+        "responses": {
+          "204": {
+            "description": "Cache remove all"
           },
-          "required": ["error"]
-        },
-        "ServerErrorSchema": {
-          "type": "object",
-          "properties": {
-            "error": {
-              "type": "string",
-              "description": "Error message",
-              "example": "Internal server error"
+          "404": {
+            "description": "Caches not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorSchema"
+                }
+              }
             }
-          },
-          "required": ["error"]
-        },
-        "NotFoundErrorSchema": {
-          "type": "object",
-          "properties": {
-            "error": {
-              "type": "string",
-              "description": "Error message",
-              "example": "Item not found"
-            }
-          },
-          "required": ["error"]
-        },
-        "DraftcacheSchema": {
-          "type": "object",
-          "properties": {
-            "key": {
-              "type": "string",
-              "description": "key of the cache",
-              "example": "123y"
-            },
-            "value": {
-              "type": "string",
-              "description": "value of the cache",
-              "example": "test"
-            }
-          },
-          "required": ["name", "value"]
-        },
-        "cacheSchema": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/DraftcacheSchema"
-            }
-          ],
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "MongoDB id of the document",
-              "example": "5d7224d3b40b1a1a046697dd"
-            },
-            "createdAt": {
-              "type": "number",
-              "description": "Created at timestamp in miliseconds",
-              "example": 1616158942428
-            },
-            "updatedAt": {
-              "type": "number",
-              "description": "Updated at timestamp in miliseconds",
-              "example": 1616158942428
-            }
-          },
-          "required": ["_id", "createdAt", "updatedAt"]
+          }
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "BadRequestSchema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message",
+            "example": "PATH: [key] ;; MESSAGE: \"key\" is required"
+          }
+        },
+        "required": ["error"]
+      },
+      "ServerErrorSchema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Internal server error"
+          }
+        },
+        "required": ["error"]
+      },
+      "NotFoundErrorSchema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Item not found"
+          }
+        },
+        "required": ["error"]
+      },
+      "DraftcacheSchema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "key of the cache",
+            "example": "123y"
+          },
+          "value": {
+            "type": "string",
+            "description": "value of the cache",
+            "example": "test"
+          }
+        },
+        "required": ["name", "value"]
+      },
+      "CacheSchema": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DraftcacheSchema"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "key of the document",
+            "example": "test"
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "Created at timestamp in miliseconds",
+            "example": 1616158942428
+          },
+          "updatedAt": {
+            "type": "number",
+            "description": "Updated at timestamp in miliseconds",
+            "example": 1616158942428
+          }
+        },
+        "required": ["key", "createdAt", "updatedAt"]
+      }
+    }
   }
-  
+}
