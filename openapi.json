@@ -117,7 +117,7 @@
         }
       }
     },
-    "/cache/get/{key}": {
+    "/cache/{key}": {
       "get": {
         "parameters": [
           {

@@ -13,9 +13,9 @@ const router = Router();
 router.post('/cache/add', CacheController.add);
 router.get('/cache/keys', CacheController.keys);
 router.get('/cache/set/:key', CacheController.set);
-router.put('/cache/update/:key', CacheController.update);
-router.get('/cache/get/:key', CacheController.get);
-router.delete('/cache/delete/:key', CacheController.remove);
+router.put('/cache/:key', CacheController.update);
+router.get('/cache/:key', CacheController.get);
+router.delete('/cache/:key', CacheController.remove);
 router.delete('/cache/deleteAll', CacheController.removeAll);
 
 // Dev routes
